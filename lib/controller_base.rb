@@ -7,7 +7,7 @@ class ControllerBase
   attr_reader :req, :res, :params
 
   # Setup the controller
-  def initialize(req, res, params)
+  def initialize(req, res, params={})
     @req = req
     @res = res
     @params = params.merge(req.params)
