@@ -24,7 +24,7 @@ class ControllerBase
     @res["Location"] = url
     @res.status = 302
     @already_built_response = "You have double-rendered and there is no recovering from that one!"
-    @session.store_session(@res)
+    session.store_session(@res)
     @res
   end
 
@@ -36,7 +36,7 @@ class ControllerBase
     @res["Content-Type"] = content_type
     @res.write(content)
     @already_built_response = "You have double-rendered and there is no recovering from that one!"
-    @session.store_session(@res)
+    session.store_session(@res)
     @res
   end
 

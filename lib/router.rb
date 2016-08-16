@@ -1,3 +1,4 @@
+require 'byebug'
 class Route
   attr_reader :pattern, :http_method, :controller_class, :action_name
 
@@ -57,7 +58,11 @@ class Router
   # either throw 404 or call run on a matched route
   def run(req, res)
     matched = match(req)
-    res.status = 404
-    res.errors = ("Could not find any action matching method #{req.request_method} for path #{req.path}")
+    if !matched
+      res.status = 404
+      res["Error"] = "Could not find any action matching method #{req.request_method} for path #{req.path}"
+    else
+      matched.run(req, res)
+    end
   end
 end
