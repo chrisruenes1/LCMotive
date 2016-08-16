@@ -7,9 +7,10 @@ class ControllerBase
   attr_reader :req, :res, :params
 
   # Setup the controller
-  def initialize(req, res)
+  def initialize(req, res, params)
     @req = req
     @res = res
+    @params = params.merge(req.params)
   end
 
   # Helper method to alias @already_built_response
@@ -42,7 +43,7 @@ class ControllerBase
   # use ERB and binding to evaluate templates
   # pass the rendered html to render_content
   def render(template_name)
-    template_file = "views/#{self.class.to_s.underscore}/#{template_name}.html.erb"
+    template_file = "views/#{self.class.to_s.underscore}/#{template_name.to_s}.html.erb"
     contents = File.read(template_file)
     erb = ERB.new(contents)
     html_content = erb.result(binding)
@@ -56,6 +57,7 @@ class ControllerBase
 
   # use this with the router to call action_name (:index, :show, :create...)
   def invoke_action(name)
-
+    self.send(name)
+    render(name) unless @already_built_response
   end
 end
