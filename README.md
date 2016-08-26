@@ -2,12 +2,12 @@
 
 ## An lightweight user-friendly Ruby MVC and SQL ORM
 
-LCMotive combines a stripped-down ORM with a no-frills MVC, and is built on Ruby and uses Rack as a response/request interface
+LCMotive combines a stripped-down ORM with a no-frills MVC, is built on Ruby and uses Rack as a response/request interface.
 
 ### API highlights
 
 #### ORM
-The SQLObject wraps raw SQL queries so that programmer using LCMotive will never have to write them. For example, searching for an object with any number of parameters can be done simply by passing a hash SQLObject#where.
+The SQLObject wraps raw SQL queries so that a programmer using LCMotive will never have to write them. For example, searching for an object with an arbitrary of parameters can be done by simply passing a hash SQLObject#where.
 
 ````Ruby
 def where(params)
@@ -85,7 +85,7 @@ end
 
 ### MVC
 
-The router provides a RESTful HTTP convention using Ruby's define_method metaprogramming method:
+The router provides a RESTful HTTP convention using metaprogramming:
 
 ````Ruby
 [:get, :post, :put, :delete].each do |http_method|
@@ -94,7 +94,7 @@ The router provides a RESTful HTTP convention using Ruby's define_method metapro
   end
 ````
 
-A single call to render :template_name will cause the template to be rendered. This is accomplished by binding the current context to erb's result call:
+A single call to render :template_name will cause the template to be rendered. This is accomplished by binding the current context to erb's result method:
 
 ````Ruby
 def render(template_name)
@@ -136,4 +136,4 @@ class Flash
 end
 ````
 
-### Example 
+### Example
