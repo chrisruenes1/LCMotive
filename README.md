@@ -4,8 +4,9 @@
 
 LCMotive combines a stripped-down ORM with a no-frills MVC, and is built on Ruby and uses Rack as a response/request interface
 
-#### API highlights
+### API highlights
 
+#### ORM
 The SQLObject wraps raw SQL queries so that programmer using LCMotive will never have to write them. For example, searching for an object with any number of parameters can be done simply by passing a hash SQLObject#where.
 
 ````Ruby
@@ -81,3 +82,58 @@ def has_one_through(name, through_name, source_name)
   end
 end
 ````
+
+### MVC
+
+The router provides a RESTful HTTP convention using Ruby's define_method metaprogramming method:
+
+````Ruby
+[:get, :post, :put, :delete].each do |http_method|
+  define_method(http_method) do |pattern, controller_class, action_name|
+    add_route(pattern, http_method, controller_class, action_name)
+  end
+````
+
+A single call to render :template_name will cause the template to be rendered. This is accomplished by binding the current context to erb's result call:
+
+````Ruby
+def render(template_name)
+  template_file = "views/#{self.class.to_s.underscore}/#{template_name.to_s}.html.erb"
+  contents = File.read(template_file)
+  erb = ERB.new(contents)
+  html_content = erb.result(binding)
+  render_content(html_content, 'text/html')
+end
+````
+
+Finally, both flash and flash.now methods are available. Flash.now is stored in a local object while flash is persisted in a cookie:
+
+````Ruby
+class Flash
+  
+  attr_reader :now
+  
+  def initialize(req)
+    cookie = req.cookies["_rails_lite_app_flash"]
+    cookie_content = cookie ? JSON.parse(cookie) : {}
+    @flash = FlashStore.new
+    @now = FlashStore.new(cookie_content)
+  end
+  
+  def [](key)
+    @now[key] || @flash[key]
+  end
+  
+  def []=(key, value)
+    @flash[key] = value
+    @now[key] = value
+  end
+  
+  def store_flash(res)
+    value = @flash.to_json
+    res.set_cookie("_rails_lite_app_flash", {path: "/", value: value})
+  end
+end
+````
+
+### Example 
