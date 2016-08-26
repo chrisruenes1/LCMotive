@@ -7,7 +7,7 @@ LCMotive combines a stripped-down ORM with a no-frills MVC, is built on Ruby and
 ### API highlights
 
 #### ORM
-The SQLObject wraps raw SQL queries so that a programmer using LCMotive will never have to write them. For example, searching for an object with an arbitrary of parameters can be done by simply passing a hash SQLObject#where.
+The SQLObject wraps raw SQL queries so that a programmer using LCMotive will never have to write them. For example, searching for an object with an arbitrary of parameters can be done by simply passing a hash to SQLObject#where.
 
 ````Ruby
 def where(params)
@@ -26,7 +26,7 @@ def where(params)
 end
 ````
 
-It is also easy to set up association methods between objects. Simple methods such as belongs_to or has_many are available, as are more complex ones such as has_one_through. To enable the latter, each object stores on it one or multiple assoc_options, which keep track of the data that relates the object to others.
+It is also easy to set up association methods between objects. Simple methods such as belongs_to or has_many are available, as are more complex ones such as has_one_through. To enable the latter, each object stores on it one or more assoc_options, which keep track of the data that relates the object to others.
 
 ````Ruby
 class AssocOptions
@@ -47,7 +47,7 @@ class AssocOptions
 end
 ````
 
-Below is an implementation of has_one_through using a nested set of assoc_options
+Below is an implementation of has_one_through using a nested set of assoc_options:
 
 
 ````Ruby
@@ -94,7 +94,7 @@ The router provides a RESTful HTTP convention using metaprogramming:
   end
 ````
 
-A single call to render :template_name will cause the template to be rendered. This is accomplished by binding the current context to erb's result method:
+And a single call to render :template_name will render the named template. This is accomplished by binding the current context to erb's result method:
 
 ````Ruby
 def render(template_name)
